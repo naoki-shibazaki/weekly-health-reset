@@ -24,6 +24,14 @@ const CYCLE_STEPS = [
     color: "bg-green-100 text-green-700 border-green-200",
     icon: "🍽️",
     href: "/meal-plan",
+  },
+  {
+    day: "金〜土",
+    phase: "献立カレンダー",
+    description: "ドラッグ＆ドロップで献立を調整。栄養スコアをリアルタイム確認",
+    color: "bg-indigo-100 text-indigo-700 border-indigo-200",
+    icon: "📅",
+    href: "/meal-calendar",
     highlight: true,
   },
   {
@@ -108,9 +116,9 @@ export default function HomePage() {
       </div>
 
       {/* CTA */}
-      <Link href="/meal-plan">
+      <Link href="/meal-calendar">
         <div className="w-full bg-[#5B8CFF] hover:bg-[#4a7aef] text-white font-bold py-4 px-6 rounded-2xl text-center text-lg transition-colors cursor-pointer shadow-lg shadow-[#5B8CFF]/30">
-          今週の献立を確認する →
+          献立カレンダーを開く →
         </div>
       </Link>
     </div>
