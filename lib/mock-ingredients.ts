@@ -1,0 +1,138 @@
+import type { RawIngredient } from './types';
+
+/**
+ * 7日分の献立から抽出した食材の生データ（mock）。
+ * 実際は meal_plan_ingredients テーブルから取得する。
+ *
+ * 集計後に重複が合算されるよう、意図的に同一食材を複数日に配置している。
+ * 例）鶏むね肉：月・火・水・土・日 → 合計 1,000g
+ */
+export const MOCK_RAW_INGREDIENTS: RawIngredient[] = [
+  // ───────────── 月（親子丼・豚汁定食・サーモンホイル焼き・ヨーグルト） ─────────────
+  { foodName: '鶏むね肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '月', recipeName: '親子丼' },
+  { foodName: '卵',             amountG: 120, unitDisplay: '2個',    category: '乳製品・卵', isStaple: false, dayLabel: '月', recipeName: '親子丼' },
+  { foodName: '玉ねぎ',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: '親子丼' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '月', recipeName: '親子丼' },
+  { foodName: '豚バラ肉',       amountG: 100, unitDisplay: '100g',   category: '肉・魚',     isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: '大根',           amountG: 100, unitDisplay: '3cm分',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: 'にんじん',       amountG:  50, unitDisplay: '1/3本',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: 'ごぼう',         amountG:  50, unitDisplay: '1/4本',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: '木綿豆腐',       amountG: 100, unitDisplay: '1/3丁',  category: '乳製品・卵', isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: '味噌',           amountG:  30, unitDisplay: '大さじ2', category: '調味料・その他', isStaple: true, dayLabel: '月', recipeName: '豚汁定食' },
+  { foodName: 'サーモン（切身）', amountG: 200, unitDisplay: '1切れ', category: '肉・魚',     isStaple: false, dayLabel: '月', recipeName: 'サーモンのホイル焼き' },
+  { foodName: 'ブロッコリー',   amountG: 100, unitDisplay: '1/3株',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: 'サーモンのホイル焼き' },
+  { foodName: '玉ねぎ',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: 'サーモンのホイル焼き' },
+  { foodName: 'バター',         amountG:  10, unitDisplay: '10g',    category: '乳製品・卵', isStaple: true, dayLabel: '月', recipeName: 'サーモンのホイル焼き' },
+  { foodName: 'ギリシャヨーグルト', amountG: 150, unitDisplay: '1個', category: '乳製品・卵', isStaple: false, dayLabel: '月', recipeName: 'ギリシャヨーグルト' },
+  { foodName: 'ブルーベリー',   amountG:  50, unitDisplay: '50g',    category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: 'ギリシャヨーグルト' },
+  { foodName: 'いちご',         amountG:  50, unitDisplay: '5〜6粒', category: '野菜・果物', isStaple: false, dayLabel: '月', recipeName: 'ギリシャヨーグルト' },
+
+  // ───────────── 火（オートミール・ラップ・豆腐ハンバーグ・ゆで卵） ─────────────
+  { foodName: 'オートミール',   amountG:  80, unitDisplay: '80g',    category: '穀物・豆類', isStaple: false, dayLabel: '火', recipeName: 'オートミールフルーツボウル' },
+  { foodName: 'バナナ',         amountG: 100, unitDisplay: '1本',    category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: 'オートミールフルーツボウル' },
+  { foodName: 'ブルーベリー',   amountG:  50, unitDisplay: '50g',    category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: 'オートミールフルーツボウル' },
+  { foodName: '牛乳',           amountG: 200, unitDisplay: '200ml',  category: '乳製品・卵', isStaple: false, dayLabel: '火', recipeName: 'オートミールフルーツボウル' },
+  { foodName: '鶏むね肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '火', recipeName: 'サラダチキンラップ' },
+  { foodName: 'トルティーヤ',   amountG:  80, unitDisplay: '2枚',    category: '穀物・豆類', isStaple: false, dayLabel: '火', recipeName: 'サラダチキンラップ' },
+  { foodName: 'レタス',         amountG:  50, unitDisplay: '2〜3枚', category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: 'サラダチキンラップ' },
+  { foodName: 'トマト',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: 'サラダチキンラップ' },
+  { foodName: 'アボカド',       amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: 'サラダチキンラップ' },
+  { foodName: '木綿豆腐',       amountG: 200, unitDisplay: '2/3丁',  category: '乳製品・卵', isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食' },
+  { foodName: '合いびき肉',     amountG: 100, unitDisplay: '100g',   category: '肉・魚',     isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食' },
+  { foodName: '玉ねぎ',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食' },
+  { foodName: '卵',             amountG:  60, unitDisplay: '1個',    category: '乳製品・卵', isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食' },
+  { foodName: '大根',           amountG: 100, unitDisplay: '3cm分',  category: '野菜・果物', isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食（おろし用）' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '火', recipeName: '豆腐ハンバーグ定食' },
+  { foodName: '卵',             amountG: 120, unitDisplay: '2個',    category: '乳製品・卵', isStaple: false, dayLabel: '火', recipeName: 'ゆで卵' },
+
+  // ───────────── 水（卵かけご飯・鮭チャーハン・塩麹蒸し・アーモンド） ─────────────
+  { foodName: '卵',             amountG:  60, unitDisplay: '1個',    category: '乳製品・卵', isStaple: false, dayLabel: '水', recipeName: '卵かけご飯' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '水', recipeName: '卵かけご飯' },
+  { foodName: '木綿豆腐',       amountG: 100, unitDisplay: '1/3丁',  category: '乳製品・卵', isStaple: false, dayLabel: '水', recipeName: '味噌汁' },
+  { foodName: 'わかめ（乾燥）', amountG:  10, unitDisplay: '10g',    category: '野菜・果物', isStaple: false, dayLabel: '水', recipeName: '味噌汁' },
+  { foodName: '味噌',           amountG:  20, unitDisplay: '大さじ1強', category: '調味料・その他', isStaple: true, dayLabel: '水', recipeName: '味噌汁' },
+  { foodName: 'サーモン（切身）', amountG: 150, unitDisplay: '1切れ', category: '肉・魚',     isStaple: false, dayLabel: '水', recipeName: '鮭のチャーハン' },
+  { foodName: '卵',             amountG:  60, unitDisplay: '1個',    category: '乳製品・卵', isStaple: false, dayLabel: '水', recipeName: '鮭のチャーハン' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '水', recipeName: '鮭のチャーハン' },
+  { foodName: '長ねぎ',         amountG:  50, unitDisplay: '1/3本',  category: '野菜・果物', isStaple: false, dayLabel: '水', recipeName: '鮭のチャーハン' },
+  { foodName: '鶏むね肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '水', recipeName: '鶏むね肉の塩麹蒸し' },
+  { foodName: 'ブロッコリー',   amountG: 100, unitDisplay: '1/3株',  category: '野菜・果物', isStaple: false, dayLabel: '水', recipeName: '鶏むね肉の塩麹蒸し' },
+  { foodName: 'にんじん',       amountG:  50, unitDisplay: '1/3本',  category: '野菜・果物', isStaple: false, dayLabel: '水', recipeName: '鶏むね肉の塩麹蒸し' },
+  { foodName: 'アーモンド',     amountG:  30, unitDisplay: '約20粒', category: '穀物・豆類', isStaple: false, dayLabel: '水', recipeName: 'アーモンド' },
+
+  // ───────────── 木（スムージー・ひじき弁当・ブリ照り焼き・カッテージチーズ） ─────────────
+  { foodName: 'バナナ',         amountG: 100, unitDisplay: '1本',    category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'バナナプロテインスムージー' },
+  { foodName: '豆乳',           amountG: 200, unitDisplay: '200ml',  category: '乳製品・卵', isStaple: false, dayLabel: '木', recipeName: 'バナナプロテインスムージー' },
+  { foodName: 'プロテインパウダー', amountG: 30, unitDisplay: '1スクープ', category: '調味料・その他', isStaple: false, dayLabel: '木', recipeName: 'バナナプロテインスムージー' },
+  { foodName: 'ひじき（乾燥）', amountG:  10, unitDisplay: '10g',    category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'ひじき煮弁当' },
+  { foodName: 'にんじん',       amountG:  50, unitDisplay: '1/3本',  category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'ひじき煮弁当' },
+  { foodName: '大豆水煮',       amountG:  50, unitDisplay: '50g',    category: '穀物・豆類', isStaple: false, dayLabel: '木', recipeName: 'ひじき煮弁当' },
+  { foodName: 'ほうれん草',     amountG: 100, unitDisplay: '1/4束',  category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'ひじき煮弁当' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '木', recipeName: 'ひじき煮弁当' },
+  { foodName: 'ブリ（切身）',   amountG: 200, unitDisplay: '1切れ',  category: '肉・魚',     isStaple: false, dayLabel: '木', recipeName: 'ブリの照り焼き定食' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '木', recipeName: 'ブリの照り焼き定食' },
+  { foodName: 'ほうれん草',     amountG: 100, unitDisplay: '1/4束',  category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'ブリの照り焼き定食' },
+  { foodName: 'カッテージチーズ', amountG: 100, unitDisplay: '100g', category: '乳製品・卵', isStaple: false, dayLabel: '木', recipeName: 'カッテージチーズ＋トマト' },
+  { foodName: 'トマト',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '木', recipeName: 'カッテージチーズ＋トマト' },
+
+  // ───────────── 金（納豆ご飯・ガパオライス・豚しゃぶ鍋・フルーツ） ─────────────
+  { foodName: '納豆',           amountG:  50, unitDisplay: '1パック', category: '穀物・豆類', isStaple: false, dayLabel: '金', recipeName: '納豆ご飯' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '金', recipeName: '納豆ご飯' },
+  { foodName: 'キャベツ',       amountG: 100, unitDisplay: '2〜3枚', category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '野菜スープ' },
+  { foodName: 'にんじん',       amountG:  50, unitDisplay: '1/3本',  category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '野菜スープ' },
+  { foodName: '玉ねぎ',         amountG:  50, unitDisplay: '1/4個',  category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '野菜スープ' },
+  { foodName: '鶏ひき肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '金', recipeName: 'ガパオライス' },
+  { foodName: 'ピーマン',       amountG:  50, unitDisplay: '1個',    category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: 'ガパオライス' },
+  { foodName: '卵',             amountG:  60, unitDisplay: '1個',    category: '乳製品・卵', isStaple: false, dayLabel: '金', recipeName: 'ガパオライス' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '金', recipeName: 'ガパオライス' },
+  { foodName: '豚ロース薄切り', amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '金', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: '白菜',           amountG: 200, unitDisplay: '2〜3枚', category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: '長ねぎ',         amountG: 100, unitDisplay: '2/3本',  category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: '木綿豆腐',       amountG: 100, unitDisplay: '1/3丁',  category: '乳製品・卵', isStaple: false, dayLabel: '金', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: 'えのきたけ',     amountG:  50, unitDisplay: '1/2袋',  category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: 'キウイ',         amountG: 100, unitDisplay: '1個',    category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: 'フルーツミックス' },
+  { foodName: 'みかん',         amountG: 100, unitDisplay: '1個',    category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: 'フルーツミックス' },
+  { foodName: 'りんご',         amountG:  50, unitDisplay: '1/4個',  category: '野菜・果物', isStaple: false, dayLabel: '金', recipeName: 'フルーツミックス' },
+
+  // ───────────── 土（アボカドトースト・チキンバーガー・手巻き寿司・プロテインバー） ─────────────
+  { foodName: '食パン',         amountG: 120, unitDisplay: '2枚',    category: '穀物・豆類', isStaple: false, dayLabel: '土', recipeName: 'アボカドトースト' },
+  { foodName: 'アボカド',       amountG: 150, unitDisplay: '1個',    category: '野菜・果物', isStaple: false, dayLabel: '土', recipeName: 'アボカドトースト' },
+  { foodName: '卵',             amountG:  60, unitDisplay: '1個',    category: '乳製品・卵', isStaple: false, dayLabel: '土', recipeName: 'アボカドトースト' },
+  { foodName: '鶏むね肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '土', recipeName: '自家製チキンバーガー' },
+  { foodName: 'バンズ',         amountG: 120, unitDisplay: '2個',    category: '穀物・豆類', isStaple: false, dayLabel: '土', recipeName: '自家製チキンバーガー' },
+  { foodName: 'レタス',         amountG:  50, unitDisplay: '2〜3枚', category: '野菜・果物', isStaple: false, dayLabel: '土', recipeName: '自家製チキンバーガー' },
+  { foodName: 'トマト',         amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '土', recipeName: '自家製チキンバーガー' },
+  { foodName: 'チーズ',         amountG:  30, unitDisplay: '1枚',    category: '乳製品・卵', isStaple: false, dayLabel: '土', recipeName: '自家製チキンバーガー' },
+  { foodName: 'マグロ（刺身）', amountG: 100, unitDisplay: '100g',   category: '肉・魚',     isStaple: false, dayLabel: '土', recipeName: '手巻き寿司' },
+  { foodName: 'サーモン（切身）', amountG: 100, unitDisplay: '100g', category: '肉・魚',     isStaple: false, dayLabel: '土', recipeName: '手巻き寿司' },
+  { foodName: 'えび',           amountG: 100, unitDisplay: '6〜8尾', category: '肉・魚',     isStaple: false, dayLabel: '土', recipeName: '手巻き寿司' },
+  { foodName: 'アボカド',       amountG: 100, unitDisplay: '1/2個',  category: '野菜・果物', isStaple: false, dayLabel: '土', recipeName: '手巻き寿司' },
+  { foodName: '白米',           amountG: 200, unitDisplay: '1合強',  category: '穀物・豆類', isStaple: false, dayLabel: '土', recipeName: '手巻き寿司（酢飯）' },
+  { foodName: 'きゅうり',       amountG:  50, unitDisplay: '1/2本',  category: '野菜・果物', isStaple: false, dayLabel: '土', recipeName: '手巻き寿司' },
+  { foodName: 'プロテインバー', amountG:  40, unitDisplay: '1本',    category: '調味料・その他', isStaple: false, dayLabel: '土', recipeName: 'プロテインバー' },
+
+  // ───────────── 日（フレンチトースト・豚肉炒め・みぞれ煮・おしるこ） ─────────────
+  { foodName: '食パン',         amountG: 120, unitDisplay: '2枚',    category: '穀物・豆類', isStaple: false, dayLabel: '日', recipeName: 'フレンチトースト' },
+  { foodName: '卵',             amountG: 120, unitDisplay: '2個',    category: '乳製品・卵', isStaple: false, dayLabel: '日', recipeName: 'フレンチトースト' },
+  { foodName: '牛乳',           amountG: 100, unitDisplay: '100ml',  category: '乳製品・卵', isStaple: false, dayLabel: '日', recipeName: 'フレンチトースト' },
+  { foodName: 'バナナ',         amountG: 100, unitDisplay: '1本',    category: '野菜・果物', isStaple: false, dayLabel: '日', recipeName: 'フレンチトースト（添え）' },
+  { foodName: '豚肩ロース',     amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '日', recipeName: '豚肉と野菜の炒め定食' },
+  { foodName: 'キャベツ',       amountG: 150, unitDisplay: '3〜4枚', category: '野菜・果物', isStaple: false, dayLabel: '日', recipeName: '豚肉と野菜の炒め定食' },
+  { foodName: 'もやし',         amountG: 100, unitDisplay: '1/2袋',  category: '野菜・果物', isStaple: false, dayLabel: '日', recipeName: '豚肉と野菜の炒め定食' },
+  { foodName: 'にら',           amountG:  50, unitDisplay: '1/4束',  category: '野菜・果物', isStaple: false, dayLabel: '日', recipeName: '豚肉と野菜の炒め定食' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '日', recipeName: '豚肉と野菜の炒め定食' },
+  { foodName: '鶏むね肉',       amountG: 200, unitDisplay: '200g',   category: '肉・魚',     isStaple: false, dayLabel: '日', recipeName: '鶏むね肉のみぞれ煮' },
+  { foodName: '大根',           amountG: 200, unitDisplay: '6cm分',  category: '野菜・果物', isStaple: false, dayLabel: '日', recipeName: '鶏むね肉のみぞれ煮（おろし用）' },
+  { foodName: '白米',           amountG: 150, unitDisplay: '1合弱',  category: '穀物・豆類', isStaple: false, dayLabel: '日', recipeName: '鶏むね肉のみぞれ煮' },
+  { foodName: '小豆缶',         amountG: 200, unitDisplay: '1缶',    category: '穀物・豆類', isStaple: false, dayLabel: '日', recipeName: 'おしるこ' },
+  { foodName: '白玉粉',         amountG:  50, unitDisplay: '50g',    category: '穀物・豆類', isStaple: false, dayLabel: '日', recipeName: 'おしるこ' },
+
+  // ───────────── 共通調味料（常備品） ─────────────
+  { foodName: '醤油',           amountG:  50, unitDisplay: '適量',   category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: '各種料理' },
+  { foodName: 'みりん',         amountG:  50, unitDisplay: '適量',   category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: '各種料理' },
+  { foodName: 'ごま油',         amountG:  20, unitDisplay: '大さじ1', category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: '各種料理' },
+  { foodName: '塩麹',           amountG:  30, unitDisplay: '大さじ2', category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: '鶏むね肉の塩麹蒸し' },
+  { foodName: 'ポン酢',         amountG:  50, unitDisplay: '適量',   category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: '豚しゃぶ野菜鍋' },
+  { foodName: 'ナンプラー',     amountG:  20, unitDisplay: '大さじ1', category: '調味料・その他', isStaple: true, dayLabel: '〜', recipeName: 'ガパオライス' },
+];
